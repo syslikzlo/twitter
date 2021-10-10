@@ -1,6 +1,7 @@
 package nia.corewebapp.twitter.controller;
 
 import nia.corewebapp.twitter.dto.PostDto;
+import nia.corewebapp.twitter.repository.TagRepository;
 import nia.corewebapp.twitter.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,16 @@ public class PostController {
     private final PostService postService;
     private final UserRepository userRepository;
     private final ServletContext servletContext;
+    private final TagRepository tagRepository;
 
     @Autowired
     public PostController(PostService postService,
                           UserRepository userRepository,
-                          ServletContext servletContext) {
+                          ServletContext servletContext, TagRepository tagRepository) {
         this.postService = postService;
         this.userRepository = userRepository;
         this.servletContext = servletContext;
+        this.tagRepository = tagRepository;
     }
 
     @GetMapping
@@ -102,6 +105,7 @@ public class PostController {
 
     private void setCommonParams(ModelMap model) {
         model.put("users", userRepository.findAll());
+        model.put("tags", tagRepository.findAll());
         model.put("contextPath", servletContext.getContextPath());
     }
 
